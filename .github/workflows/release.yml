@@ -1,0 +1,72 @@
+name: Build and Release
+on:
+  release:
+    types: [created]
+
+env:
+  RELEASE_VERSION: ${{ github.event.release.tag_name }}
+
+jobs:
+  build_and_release:
+    runs-on: ${{ matrix.os }}
+    permissions: read-all
+    
+    strategy:
+      matrix:
+        # os: [ubuntu-latest, macos-latest, windows-latest]
+        extension: ['linux', 'macos', 'windows']
+        # file: ['tldr', 'tldr', 'tldr.exe']
+        include:
+          - extension: linux
+            os: ubuntu-latest
+            file: tldr
+          - extension: macos
+            os: macos-latest
+            file: tldr
+          - extension: windows
+            os: windows-latest
+            file: tldr
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: stable
+
+      - name: Install deps
+        run: dart pub get
+
+      - name: Build Executable for ${{ matrix.os }}
+        run: dart compile exe bin/tldr.dart -o bin/${{ matrix.file }}
+
+      - name: Zip Binaries
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            7z a bin/tldr-${{ matrix.extension }}-${{ env.RELEASE_VERSION }}.zip bin/${{ matrix.file }}
+          else
+            zip  bin/tldr-${{ matrix.extension }}-${{ env.RELEASE_VERSION }}.zip bin/${{ matrix.file }}
+          fi
+
+      - name: Get latest release
+        id: latest_release_info
+        uses: kaliber5/action-get-release@v1
+        with:
+          token: ${{ github.token }}
+          latest: true
+
+      - name: Upload Files
+        run: gh release upload ${{ env.RELEASE_VERSION }} bin/tldr-${{ matrix.extension }}-${{ env.RELEASE_VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_CUSTOM }}
+
+      # - name: Upload Asset
+      #   uses: actions/upload-release-asset@v1
+      #   with:
+      #     asset_path: bin/tldr-${{ matrix.extension }}-${{ env.RELEASE_VERSION }}.zip
+      #     asset_name: tldr-${{ matrix.extension }}-${{ env.RELEASE_VERSION }}.zip
+      #     upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
+      #     asset_content_type: application/zip
