@@ -1,9 +1,10 @@
 import 'package:fast_tldr/fast_tldr.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
-import 'dart:io' show exit;
+import 'dart:io' show exitCode;
 
 void main(List<String> arguments) {
+  exitCode = 0;
   late final ArgResults args;
   final ansi = Ansi();
 
@@ -11,30 +12,38 @@ void main(List<String> arguments) {
     args = parser.parse(arguments);
   } on FormatException catch (e) {
     eprint("${ansi.red("ARGERR:")} ${e.message}");
-    exit(1);
+    exitCode = 1;
+    return;
   }
 
   if (args['version'] == true) {
     print("tldr cli version: $version");
-    exit(0);
+    return;
   }
 
   if (args['help'] == true) {
     showHelp(parser);
-    exit(0);
+    return;
   }
 
   if (args['update'] == true) {
-    // TODO: Cache update
     print("Not Implemented!");
-    exit(0);
+    return;
+  }
+
+  if (args['list'] == true) {
+    print("Not Implemented!");
+    return;
   }
 
   if (arguments.isEmpty || args.rest.isEmpty) {
     eprint(
         "${ansi.red("ARGERR:")} Missing arguments. Use the `${ansi.bold("--help")}` flag to see usage.");
-    exit(1);
+    exitCode = 1;
+    return;
   }
+
+
 
   return;
 }

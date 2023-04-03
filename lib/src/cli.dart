@@ -11,6 +11,10 @@ var parser = ArgParser()
       abbr: 'h',
       defaultsTo: false,
       help: 'Show the help menu')
+  ..addFlag('list',
+    negatable: false,
+    defaultsTo: false,
+    help: 'List all commands from the cache')
   ..addFlag("update",
       negatable: false,
       abbr: 'u',
