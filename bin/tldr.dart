@@ -36,7 +36,7 @@ void main(List<String> arguments) {
   final index = Index(join(home().path, '.tldr'));
 
   if (args['list'] == true) {
-    index.commands.forEach((key, _) { 
+    index.commands.forEach((key, _) {
       print(key);
     });
     return;
