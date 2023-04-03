@@ -1,5 +1,4 @@
 import 'package:path/path.dart';
-import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
@@ -19,7 +18,7 @@ void main(List<String> arguments) {
   }
 
   if (args['version'] == true) {
-    print("tldr cli version: $version");
+    print("tldart $version");
     return;
   }
 
