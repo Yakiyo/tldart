@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "3.3.6"
   args:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: args
       sha256: "4cab82a83ffef80b262ddedf47a0a8e56ee6fbf7fe21e6e768b02792034dd440"
@@ -410,4 +410,4 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.5 <3.0.0"
+  dart: ">=2.19.0 <3.0.0"
