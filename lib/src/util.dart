@@ -1,4 +1,4 @@
-import 'dart:io' show stderr, Platform;
+import 'dart:io' show stderr, Platform, Directory;
 import 'package:args/args.dart' show ArgParser;
 import '../fast_tldr.dart';
 
@@ -16,7 +16,7 @@ void eprint(dynamic error) {
   return;
 }
 
-
+/// Print help message
 void showHelp(ArgParser parser) {
   print("""tldr $version
   
@@ -26,9 +26,34 @@ USAGE:
 
 ARGUMENTS:
   The command to show (e.g. `cp` or `mv`)
-  
+
 OPTIONS:
   ${parser.usage.split("\n").join("\n  ")}
 """);
   return;
+}
+
+// https://stackoverflow.com/a/25498458/17990034
+/// Get a user's home directory
+Directory home() {
+  final env = Platform.environment;
+  if (Platform.isWindows) {
+    return Directory(env['UserProfile'] as String);
+  }
+  return Directory(env['HOME'] as String);
+}
+
+/// User platform
+String userPlatform() {
+  if (Platform.isWindows) {
+    return 'windows';
+  } else if (Platform.isLinux) {
+    return 'linux';
+  } else if (Platform.isMacOS) {
+    return 'macos';
+  } else if (Platform.isAndroid) {
+    // not sure if its needed, but oh well
+    return 'android';
+  }
+  return 'common';
 }
