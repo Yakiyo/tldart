@@ -1,5 +1,6 @@
 import 'package:args/args.dart' show ArgParser;
 
+/// Parser used by the cli
 var parser = ArgParser()
   ..addFlag('version',
       negatable: false,
@@ -20,7 +21,7 @@ var parser = ArgParser()
       abbr: 'u',
       defaultsTo: false,
       help: "Update local cache")
-  ..addOption('config', abbr: 'c', help: 'Path to config file')
+  // ..addOption('config', abbr: 'c', help: 'Path to config file')
   ..addOption('language',
       abbr: 'l', defaultsTo: 'en', help: 'Specify what language to display')
   ..addOption('platform',
