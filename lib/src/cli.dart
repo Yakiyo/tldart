@@ -12,14 +12,15 @@ var parser = ArgParser()
       defaultsTo: false,
       help: 'Show the help menu')
   ..addFlag('list',
-    negatable: false,
-    defaultsTo: false,
-    help: 'List all commands from the cache')
+      negatable: false,
+      defaultsTo: false,
+      help: 'List all commands from the cache')
   ..addFlag("update",
       negatable: false,
       abbr: 'u',
       defaultsTo: false,
       help: "Update local cache")
+  ..addOption('config', abbr: 'c', help: 'Path to config file')
   ..addOption('language',
       abbr: 'l', defaultsTo: 'en', help: 'Specify what language to display')
   ..addOption('platform',
