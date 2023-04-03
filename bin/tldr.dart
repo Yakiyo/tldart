@@ -1,3 +1,5 @@
+import 'package:path/path.dart';
+import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
@@ -31,8 +33,12 @@ void main(List<String> arguments) {
     return;
   }
 
+  final index = Index(join(home().path, '.tldr'));
+
   if (args['list'] == true) {
-    print("Not Implemented!");
+    index.commands.forEach((key, _) { 
+      print(key);
+    });
     return;
   }
 

@@ -24,6 +24,8 @@ class Index {
     }
   }
 
+  Map<String, Command> get commands => _commands;
+
   /// Get a command
   Command? get(String name) {
     return _commands[name];
