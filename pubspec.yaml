@@ -1,7 +1,7 @@
-name: fast_tldr
+name: tldart
 description: Fast tldr client written in dart 
 version: 1.0.0
-repository: https://github.com/Yakiyo/fast_tldr
+repository: https://github.com/Yakiyo/tldart
 
 environment:
   sdk: '>=2.18.4 <3.0.0'

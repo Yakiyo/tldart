@@ -1,4 +1,4 @@
-import 'package:fast_tldr/fast_tldr.dart';
+import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
 import 'dart:io' show exitCode;

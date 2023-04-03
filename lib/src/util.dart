@@ -1,6 +1,6 @@
 import 'dart:io' show stderr, Platform, Directory;
 import 'package:args/args.dart' show ArgParser;
-import '../fast_tldr.dart';
+import '../tldart.dart';
 
 /// Print debug logs. This should only print them if DEBUG env is set to 1
 void debug(dynamic message) {
