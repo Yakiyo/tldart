@@ -19,9 +19,14 @@ void main(List<String> arguments) {
     exit(0);
   }
 
+  if (args['help'] == true) {
+    showHelp(parser);
+    exit(0);
+  }
+
   if (args['update'] == true) {
-    // TODO: Help
-    print("Help message");
+    // TODO: Cache update
+    print("Not Implemented!");
     exit(0);
   }
 
@@ -30,4 +35,5 @@ void main(List<String> arguments) {
     exit(1);
   }
 
+  return;
 }
