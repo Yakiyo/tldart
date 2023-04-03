@@ -18,17 +18,21 @@ void eprint(dynamic error) {
 
 /// Print help message
 void showHelp(ArgParser parser) {
-  print("""tldr $version
-  
+  print("""
+tldart $version
+Fast and easy to use TLDR client
+
 USAGE:
-  tldr [OPTIONS] [ARGUMENTS]
+  tldr [OPTIONS] [COMMAND]
   Example: tldr -p linux git log
 
 ARGUMENTS:
-  The command to show (e.g. `cp` or `mv`)
+  [COMMAND] The command to show (e.g. `cp` or `tar`)
 
 OPTIONS:
   ${parser.usage.split("\n").join("\n  ")}
+
+To view documentation or file an issue, please visit https://github.com/Yakiyo/tldart
 """);
   return;
 }
