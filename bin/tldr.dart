@@ -31,7 +31,8 @@ void main(List<String> arguments) {
   }
 
   if (arguments.isEmpty || args.rest.isEmpty) {
-    eprint("${ansi.red("ARGERR:")} Missing arguments. Use the `${ansi.bold("--help")}` flag to see usage.");
+    eprint(
+        "${ansi.red("ARGERR:")} Missing arguments. Use the `${ansi.bold("--help")}` flag to see usage.");
     exit(1);
   }
 
