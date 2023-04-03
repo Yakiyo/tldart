@@ -1,13 +1,10 @@
 name: fast_tldr
-description: A sample command-line application.
+description: Fast tldr client written in dart 
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/Yakiyo/fast_tldr
 
 environment:
   sdk: '>=2.18.4 <3.0.0'
-
-# dependencies:
-#   path: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0
@@ -15,5 +12,6 @@ dev_dependencies:
 dependencies:
   ansi: ^0.2.2
   archive: ^3.3.6
+  args: ^2.4.0
   http: ^0.13.5
   path: ^1.8.3
