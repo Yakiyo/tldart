@@ -58,7 +58,7 @@ class Command {
   }
 
   /// Read the corresponding file for a command and return its content
-  String? getContent(String cachePath,
+  String getContent(String cachePath,
       {String language = 'en', String? platform}) {
     if (!languages.contains(language)) {
       throw LibException(Errors.InvalidCommandLang);
