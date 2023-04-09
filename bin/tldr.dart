@@ -63,9 +63,10 @@ void main(List<String> args) {
     run(args);
     return;
   } catch (e) {
-    eprint("${Ansi().red("UNKNOWNERR:")} Unhandled error from library. Please file an issue to https://github.com/Yakiyo/tldart/issues");
+    eprint(
+        "${Ansi().red("UNKNOWNERR:")} Unhandled error from library. Please file an issue to https://github.com/Yakiyo/tldart/issues");
     eprint(e);
     exitCode = 1;
     return;
-  }  
+  }
 }
