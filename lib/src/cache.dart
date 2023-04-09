@@ -44,6 +44,7 @@ class Command {
   late final String name;
   final List<String> platforms = [];
   final List<String> languages = [];
+  final List<Target> targets = [];
 
   Command(Map<String, dynamic> map) {
     name = map['name'] as String;
@@ -54,6 +55,10 @@ class Command {
 
     for (final v in (map['language'] as List<dynamic>)) {
       languages.add(v as String);
+    }
+
+    for (final v in map['targets']) {
+      targets.add(Target(Map.from(v)));
     }
   }
 
@@ -90,6 +95,25 @@ class Command {
       name: $name,
       platform: $platforms,
       language: $languages,
+    }""";
+  }
+}
+
+/// A target class
+class Target {
+  late final String os;
+  late final String language;
+
+  Target(Map<String, String> dict) {
+    os = dict['os'] as String;
+    language = dict['language'] as String;
+  }
+
+  @override
+  String toString() {
+    return """{
+      os: $os,
+      language: $language
     }""";
   }
 }
