@@ -6,7 +6,7 @@ import 'package:ansi/ansi.dart' show ansi;
 import 'dart:io' show exitCode;
 
 /// Wrapper around the entire programe
-void run(List<String> arguments) async {
+Future<void> run(List<String> arguments) async {
   exitCode = 0;
   late final ArgResults args;
 
@@ -68,6 +68,7 @@ void run(List<String> arguments) async {
     final index = Index(dirs.index.path);
     final language = args['language'] as String;
     final platform = args['platform'] as String?;
+    print("$language, $platform");
     final query = args.rest.map((e) => e.toLowerCase()).join("-");
     final command = index.get(query);
     if (command == null) {
@@ -76,7 +77,7 @@ void run(List<String> arguments) async {
           "\nUpdate local cache with the `--update` flag or send a pull request to ${ansi.underline("https://github.com/tldr-pages/tldr")}.");
       return;
     }
-    final lines = render(command.getContent(dirs.cache.path));
+    final lines = render(command.getContent(dirs.cache.path, language: language, platform: platform));
     print(lines.join('\n\n'));
     return;
   } on LibException catch (e) {
@@ -94,7 +95,7 @@ void run(List<String> arguments) async {
 
       case Errors.MissingCommandFile:
         eprint(
-            "${ansi.red("FILEERR:")} Missing for command at ${e.message}. Use the `--update` flag to update local cache");
+            "${ansi.red("FILEERR:")} Missing file for command at ${e.message}. Use the `--update` flag to update local cache");
         break;
 
       case Errors.InvalidCommandPlatform:
@@ -117,9 +118,9 @@ void run(List<String> arguments) async {
   }
 }
 
-void main(List<String> args) {
+void main(List<String> args) async {
   try {
-    run(args);
+    await run(args);
     return;
   } catch (e) {
     eprint(
