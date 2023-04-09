@@ -67,7 +67,9 @@ class Command {
       throw LibException(Errors.InvalidCommandPlatform);
     } else {
       platform = userPlatform();
+      debug("Switching platform to user platform: $platform");
       if (!platforms.contains(platform)) {
+        debug("Switching platform to common from $platform");
         platform = 'common';
         if (!platforms.contains(platform)) {
           throw LibException(Errors.InvalidDefaultPlatform);
