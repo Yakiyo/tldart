@@ -4,7 +4,7 @@ import 'package:ansi/ansi.dart' show Ansi;
 List<String> render(String content) {
   final ansi = Ansi();
   final res = <String>[];
-  res[0] = '';
+  res.add('');
   for (var line in content.split('\n')) {
     if (line.startsWith('#')) {
       continue; // skip command name
@@ -24,5 +24,6 @@ List<String> render(String content) {
       res.add('      ${ansi.cyan(line)}');
     }
   }
+  res.add('');
   return res;
 }
