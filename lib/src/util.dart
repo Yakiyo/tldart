@@ -84,7 +84,7 @@ class TldrDir {
   late Directory cache;
   late File config;
   late File index;
-  
+
   TldrDir(String rootPath) {
     root = Directory(rootPath);
     cache = Directory(join(rootPath, 'cache'));
@@ -92,8 +92,18 @@ class TldrDir {
     index = File(join(cache.path, 'index.json'));
   }
 
-  /// Default values. 
-  /// 
+  @override
+  String toString() {
+    return '''{
+  root: $root,
+  cache: $cache,
+  config: $config,
+  index: $index,
+}''';
+  }
+
+  /// Default values.
+  ///
   /// The default location is `~/.tldr` directory
   static TldrDir defaults() {
     return TldrDir(join(home().path, '.tldr'));
