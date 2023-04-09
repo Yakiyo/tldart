@@ -1,3 +1,4 @@
+import 'package:tldart/src/error.dart';
 import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
@@ -56,7 +57,64 @@ void run(List<String> arguments) async {
     return;
   }
 
-  return;
+  try {
+    final dirs = TldrDir.defaults();
+    if (!(dirs.cache.existsSync() && dirs.index.existsSync())) {
+      throw LibException(Errors.MissingCache);
+      // eprint(
+      //     "${ansi.red("FILEERR:")} Missing cache directory. Use the `--update` flag to update local cache.");
+      // exitCode = 1;
+    }
+    final index = Index(dirs.index.path);
+    final language = args['language'] as String;
+    final platform = args['platform'] as String?;
+    final query = args.rest.map((e) => e.toLowerCase()).join("-");
+    final command = index.get(query);
+    if (command == null) {
+      eprint(
+          "No command with the name ${ansi.bold(query)} exists in the local cache."
+          "\nUpdate local cache with the `--update` flag or send a pull request to ${ansi.underline("https://github.com/tldr-pages/tldr")}.");
+      return;
+    }
+    final lines = render(command.getContent(dirs.cache.path));
+    print(lines.join('\n\n'));
+    return;
+  } on LibException catch (e) {
+    switch (e.code) {
+      case Errors.InvalidIndex:
+        continue missingCache;
+      case Errors.MissingIndex:
+        continue missingCache;
+
+      missingCache:
+      case Errors.MissingCache:
+        eprint(
+            "${ansi.red("CACHEERR:")} Missing cache directory. Use the `--update` flag to update local cache.");
+        break;
+
+      case Errors.MissingCommandFile:
+        eprint(
+            "${ansi.red("FILEERR:")} Missing for command at ${e.message}. Use the `--update` flag to update local cache");
+        break;
+
+      case Errors.InvalidCommandPlatform:
+        eprint("${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+        break;
+
+      case Errors.InvalidDefaultPlatform:
+        eprint("${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+        break;
+
+      case Errors.InvalidCommandLang:
+        eprint(
+            "${ansi.red("ARGERR:")} The command isn't available in user's platform or the common platform. Please provide a platform explicitly.");
+        break;
+
+      default:
+    }
+    exitCode = 1;
+    return;
+  }
 }
 
 void main(List<String> args) {
