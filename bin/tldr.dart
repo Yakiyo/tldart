@@ -1,4 +1,4 @@
-import 'package:path/path.dart';
+import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
@@ -32,9 +32,15 @@ void main(List<String> arguments) {
     return;
   }
 
-  final index = Index(join(home().path, '.tldr'));
-
   if (args['list'] == true) {
+    final dirs = TldrDir.defaults();
+    if (!dirs.index.existsSync()) {
+      eprint(
+          "${ansi.red("FILEERR:")} Missing `index.json` file. Please run the `--update` flag to update local cache.");
+      exitCode = 1;
+      return;
+    }
+    final index = Index(dirs.index.path);
     index.commands.forEach((key, _) {
       print(key);
     });
