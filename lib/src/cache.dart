@@ -131,12 +131,18 @@ Future<void> updateCache(Directory tldrDir) async {
     await tldrDir.create(recursive: true);
   }
 
+  final oldCache = Directory(join(tldrDir.path, '_cache'));
   final cache = Directory(join(tldrDir.path, 'cache'));
 
   // If the directory exists, we move the current contents to `_cache` directory
   if (cache.existsSync()) {
     debug('Moving old `cache` dir to `_cache`');
-    await cache.rename('_cache');
+    oldCache.existsSync() ? await oldCache.delete() : null;
+    await cache.rename('_cache').catchError((e) {
+      debug("Renaming failed, attempting to delete file.");
+      cache.delete(recursive: true);
+      return oldCache;
+    });
   }
   final zipFile = File(join(tldrDir.path, 'cache.zip'));
 
@@ -150,7 +156,6 @@ Future<void> updateCache(Directory tldrDir) async {
 
   debug("Deleting old pages directory");
   try {
-    final oldCache = Directory(join(tldrDir.path, '_cache'));
     await oldCache.delete(recursive: true);
   } catch (_) {
     // ignore
