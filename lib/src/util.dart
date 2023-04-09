@@ -3,7 +3,7 @@ import 'package:path/path.dart' show join;
 import 'package:args/args.dart' show ArgParser;
 import '../tldart.dart';
 
-/// Print debug logs. This should only print them if DEBUG env is set to 1
+/// Print debug logs. This should only print them if DEBUG env is non-empty
 void debug(dynamic message) {
   final env = Platform.environment['DEBUG'];
   if (env == null || env.isEmpty) return;
