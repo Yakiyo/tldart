@@ -68,7 +68,7 @@ Future<void> run(List<String> arguments) async {
     final index = Index(dirs.index.path);
     final language = args['language'] as String;
     final platform = args['platform'] as String?;
-    print("$language, $platform");
+
     final query = args.rest.map((e) => e.toLowerCase()).join("-");
     final command = index.get(query);
     if (command == null) {
@@ -77,7 +77,8 @@ Future<void> run(List<String> arguments) async {
           "\nUpdate local cache with the `--update` flag or send a pull request to ${ansi.underline("https://github.com/tldr-pages/tldr")}.");
       return;
     }
-    final lines = render(command.getContent(dirs.cache.path, language: language, platform: platform));
+    final lines = render(command.getContent(dirs.cache.path,
+        language: language, platform: platform));
     print(lines.join('\n\n'));
     return;
   } on LibException catch (e) {
@@ -99,11 +100,13 @@ Future<void> run(List<String> arguments) async {
         break;
 
       case Errors.InvalidCommandPlatform:
-        eprint("${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+        eprint(
+            "${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
         break;
 
       case Errors.InvalidDefaultPlatform:
-        eprint("${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+        eprint(
+            "${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
         break;
 
       case Errors.InvalidCommandLang:
