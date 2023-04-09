@@ -1,4 +1,5 @@
-import 'dart:io' show stderr, Platform, Directory;
+import 'dart:io' show stderr, Platform, Directory, File;
+import 'package:path/path.dart' show join;
 import 'package:args/args.dart' show ArgParser;
 import '../tldart.dart';
 
@@ -60,4 +61,41 @@ String userPlatform() {
     return 'android';
   }
   return 'common';
+}
+
+// A Tldr Directory should basically look like this
+// ```
+// -- .tldr -> root file
+//     -- config.toml -> config file
+//     -- cache/ -> cache directory. Usually handled by the app
+//         -- index.json -> index file that comes with tldr.zip
+//         -- pages -> individual pages dirs for diff langs
+//         -- pages.sh
+//         -- pages.<lang>
+//             -- android -> individual platform directories for the language
+//                 -- ...pages -> several page files
+//             -- linux
+//                 -- ...pages
+// ```
+
+/// Paths to several folders and filers necessary for the programme
+class TldrDir {
+  late Directory root;
+  late Directory cache;
+  late File config;
+  late File index;
+  
+  TldrDir(String rootPath) {
+    root = Directory(rootPath);
+    cache = Directory(join(rootPath, 'cache'));
+    config = File(join(rootPath, 'config.toml'));
+    index = File(join(cache.path, 'index.json'));
+  }
+
+  /// Default values. 
+  /// 
+  /// The default location is `~/.tldr` directory
+  static TldrDir defaults() {
+    return TldrDir(join(home().path, '.tldr'));
+  }
 }
