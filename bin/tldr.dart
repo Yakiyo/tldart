@@ -4,7 +4,8 @@ import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
 import 'dart:io' show exitCode;
 
-void main(List<String> arguments) {
+/// Wrapper around the entire programe
+void run(List<String> arguments) async {
   exitCode = 0;
   late final ArgResults args;
   final ansi = Ansi();
@@ -28,7 +29,7 @@ void main(List<String> arguments) {
   }
 
   if (args['update'] == true) {
-    print("Not Implemented!");
+    await updateCache(TldrDir.defaults().root);
     return;
   }
 
@@ -55,4 +56,16 @@ void main(List<String> arguments) {
   }
 
   return;
+}
+
+void main(List<String> args) {
+  try {
+    run(args);
+    return;
+  } catch (e) {
+    eprint("${Ansi().red("UNKNOWNERR:")} Unhandled error from library. Please file an issue to https://github.com/Yakiyo/tldart/issues");
+    eprint(e);
+    exitCode = 1;
+    return;
+  }  
 }
