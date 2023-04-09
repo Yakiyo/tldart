@@ -29,7 +29,9 @@ void run(List<String> arguments) async {
   }
 
   if (args['update'] == true) {
-    await updateCache(TldrDir.defaults().root);
+    final dirs = TldrDir.defaults();
+    await updateCache(dirs.root);
+    print("Successfully updated local cache at ${dirs.cache}");
     return;
   }
 
