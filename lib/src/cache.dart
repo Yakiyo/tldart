@@ -68,12 +68,16 @@ class Command {
     if (!languages.contains(language)) {
       throw LibException(Errors.InvalidCommandLang);
     }
-    if (platform is String && !platforms.contains(platform)) {
+    if (platform is String &&
+        (!platforms.contains(platform) ||
+            !targets.any((e) => e.os == platform && e.language == language))) {
       throw LibException(Errors.InvalidCommandPlatform);
     } else {
       platform = userPlatform();
-      debug("Switching platform to user platform: $platform");
-      if (!platforms.contains(platform)) {
+      debug("Using user platform $platform as default");
+      // If it doesnt have any target for user platform with the provided language, switch to commong
+      if (!platforms.contains(platform) ||
+          !targets.any((e) => e.os == platform && e.language == language)) {
         debug("Switching platform to common from $platform");
         platform = 'common';
         if (!platforms.contains(platform)) {

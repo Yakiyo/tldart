@@ -101,12 +101,12 @@ Future<void> run(List<String> arguments) async {
 
       case Errors.InvalidCommandPlatform:
         eprint(
-            "${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+            "${ansi.red("ARGERR:")} The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.");
         break;
 
       case Errors.InvalidDefaultPlatform:
         eprint(
-            "${ansi.red("ARGERR:")} The command isn't available in provided platform. Please provide a different platform or none to use defaults.");
+            "${ansi.red("ARGERR:")} The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.");
         break;
 
       case Errors.InvalidCommandLang:
