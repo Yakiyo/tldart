@@ -2,14 +2,14 @@ import 'package:tldart/src/error.dart';
 import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
-import 'package:ansi/ansi.dart' show ansi;
+import 'package:ansi/ansi.dart' show Ansi;
 import 'dart:io' show exitCode;
 
 /// Wrapper around the entire programe
 Future<void> run(List<String> arguments) async {
   exitCode = 0;
   late final ArgResults args;
-
+  final ansi = Ansi();
   try {
     args = parser.parse(arguments);
   } on FormatException catch (e) {
@@ -127,7 +127,7 @@ void main(List<String> args) async {
     return;
   } catch (e) {
     eprint(
-        "${ansi.red("UNKNOWNERR:")} Unhandled error from library. Please file an issue to https://github.com/Yakiyo/tldart/issues");
+        "${Ansi().red("UNKNOWNERR:")} Unhandled error from library. Please file an issue to https://github.com/Yakiyo/tldart/issues");
     eprint(e);
     exitCode = 1;
     return;
