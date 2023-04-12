@@ -1,3 +1,3 @@
-# Fast tldr
+# tldart
 
 Fast tldr client written in dart 
