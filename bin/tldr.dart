@@ -69,10 +69,7 @@ Future<void> run(List<String> arguments) async {
     final query = args.rest.map((e) => e.toLowerCase()).join("-");
     final command = index.get(query);
     if (command == null) {
-      eprint(
-          "No command with the name ${ansi.bold(query)} exists in the local cache."
-          "\nUpdate local cache with the `--update` flag or send a pull request to ${ansi.underline("https://github.com/tldr-pages/tldr")}.");
-      return;
+      throw LibException(Errors.InvalidCommand, message: ansi.bold(query));
     }
     final lines = render(command.getContent(dirs.cache.path,
         language: language, platform: platform));
@@ -81,6 +78,12 @@ Future<void> run(List<String> arguments) async {
   } on LibException catch (e) {
     late final String eMsg;
     switch (e.code) {
+      case Errors.InvalidCommand:
+        eMsg =
+            "Invalid command query.\n\n No command with the name ${e.message} exists in the local cache."
+            "\n Update local cache with the `--update` flag or send a pull request to ${ansi.underline("https://github.com/tldr-pages/tldr")}.";
+        break;
+
       case Errors.InvalidIndex:
         continue missingCache;
       case Errors.MissingIndex:

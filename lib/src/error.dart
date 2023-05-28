@@ -2,8 +2,9 @@
 
 /// Set of errors to be used for handling specific events
 enum Errors {
-  MissingIndex,
   InvalidIndex,
+  InvalidCommand,
+  MissingIndex,
   MissingCache,
   MissingCommandFile,
   InvalidCommandLang,
