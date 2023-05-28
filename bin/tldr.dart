@@ -5,7 +5,7 @@ import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
 import 'dart:io' show exitCode;
 
-/// Wrapper around the entire programe
+/// Wrapper around the entire program
 Future<void> run(List<String> arguments) async {
   exitCode = 0;
   late final ArgResults args;
@@ -13,7 +13,7 @@ Future<void> run(List<String> arguments) async {
   try {
     args = parser.parse(arguments);
   } on FormatException catch (e) {
-    eprint("${ansi.red("ARGERR:")} ${e.message}");
+    eprint("${ansi.red("[ERROR]")} ${e.message}");
     exitCode = 1;
     return;
   }
@@ -39,7 +39,7 @@ Future<void> run(List<String> arguments) async {
     final dirs = TldrDir.defaults();
     if (!dirs.index.existsSync()) {
       eprint(
-          "${ansi.red("FILEERR:")} Missing `index.json` file. Please run the `--update` flag to update local cache.");
+          "${ansi.red("[ERROR]")} Missing `index.json` file. Please run the `--update` flag to update local cache.");
       exitCode = 1;
       return;
     }
@@ -52,7 +52,7 @@ Future<void> run(List<String> arguments) async {
 
   if (arguments.isEmpty || args.rest.isEmpty) {
     eprint(
-        "${ansi.red("ARGERR:")} Missing arguments. Use the `${ansi.bold("--help")}` flag to see usage.");
+        "${ansi.red("[ERROR]")} Missing arguments. Use the `${ansi.bold("--help")}` flag to see usage.");
     exitCode = 1;
     return;
   }
@@ -61,9 +61,6 @@ Future<void> run(List<String> arguments) async {
     final dirs = TldrDir.defaults();
     if (!(dirs.cache.existsSync() && dirs.index.existsSync())) {
       throw LibException(Errors.MissingCache);
-      // eprint(
-      //     "${ansi.red("FILEERR:")} Missing cache directory. Use the `--update` flag to update local cache.");
-      // exitCode = 1;
     }
     final index = Index(dirs.index.path);
     final language = args['language'] as String;
@@ -82,6 +79,7 @@ Future<void> run(List<String> arguments) async {
     print(lines.join('\n\n'));
     return;
   } on LibException catch (e) {
+    late final String eMsg;
     switch (e.code) {
       case Errors.InvalidIndex:
         continue missingCache;
@@ -90,32 +88,35 @@ Future<void> run(List<String> arguments) async {
 
       missingCache:
       case Errors.MissingCache:
-        eprint(
-            "${ansi.red("CACHEERR:")} Missing cache directory. Use the `--update` flag to update local cache.");
+        eMsg =
+            "Missing cache directory. Use the ${ansi.green("`--update`")} flag to update local cache.";
         break;
 
       case Errors.MissingCommandFile:
-        eprint(
-            "${ansi.red("FILEERR:")} Missing file for command at ${e.message}. Use the `--update` flag to update local cache");
+        eMsg =
+            "Missing file for command at ${e.message}. Use the `--update` flag to update local cache";
         break;
 
       case Errors.InvalidCommandPlatform:
-        eprint(
-            "${ansi.red("ARGERR:")} The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.");
+        eMsg =
+            "The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.";
         break;
 
       case Errors.InvalidDefaultPlatform:
-        eprint(
-            "${ansi.red("ARGERR:")} The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.");
+        eMsg =
+            "The command isn't available in provided platform in the language. Please provide a different platform or none to use defaults.";
         break;
 
       case Errors.InvalidCommandLang:
-        eprint(
-            "${ansi.red("ARGERR:")} The command isn't available in user's platform or the common platform. Please provide a platform explicitly.");
+        eMsg =
+            "The command isn't available in user's platform or the common platform. Please provide a platform explicitly.";
         break;
 
       default:
+        eMsg =
+            "Unknown error. Please file an issue at ${ansi.cyan("https://github.com/Yakiyo/tldart")}";
     }
+    eprint("${ansi.red("[ERROR]")} $eMsg");
     exitCode = 1;
     return;
   }
