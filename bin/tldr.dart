@@ -38,10 +38,7 @@ Future<void> run(List<String> arguments) async {
   if (args['list'] == true) {
     final dirs = TldrDir.defaults();
     if (!dirs.index.existsSync()) {
-      eprint(
-          "${ansi.red("[ERROR]")} Missing `index.json` file. Please run the `--update` flag to update local cache.");
-      exitCode = 1;
-      return;
+      throw LibException(Errors.MissingIndex);
     }
     final index = Index(dirs.index.path);
     index.commands.forEach((key, _) {
@@ -85,11 +82,15 @@ Future<void> run(List<String> arguments) async {
         break;
 
       case Errors.InvalidIndex:
-        continue missingCache;
-      case Errors.MissingIndex:
-        continue missingCache;
+        eMsg =
+            "Invalid `index.json` file. Please run the `--update` flag to restore index file";
+        break;
 
-      missingCache:
+      case Errors.MissingIndex:
+        eMsg =
+            "Missing `index.json` file. Please run the `--update` flag to update local cache.";
+        break;
+
       case Errors.MissingCache:
         eMsg =
             "Missing cache directory. Use the ${ansi.green("`--update`")} flag to update local cache.";
