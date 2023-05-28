@@ -4,4 +4,4 @@ export 'src/formatter.dart';
 export 'src/util.dart' show debug, eprint, showHelp, home;
 
 /// Package version
-const version = "1.0.2";
+const version = "1.0.3";
