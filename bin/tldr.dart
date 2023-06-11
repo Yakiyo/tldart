@@ -3,7 +3,7 @@ import 'package:tldart/src/util.dart';
 import 'package:tldart/tldart.dart';
 import 'package:args/args.dart' show ArgResults;
 import 'package:ansi/ansi.dart' show Ansi;
-import 'dart:io' show exitCode;
+import 'dart:io' show exitCode, File;
 
 /// Wrapper around the entire program
 Future<void> run(List<String> arguments) async {
@@ -46,6 +46,24 @@ Future<void> run(List<String> arguments) async {
     });
     return;
   }
+  if (args['render'] != null) {
+    final file = File(args['render']);
+    if (!file.existsSync()) {
+      eprint(
+          "${ansi.red("[ERROR]")} No file with path ${ansi.bold("`${args['render']}`")} exists.");
+      exitCode = 1;
+      return;
+    }
+    final content = file.readAsStringSync();
+    late final String res;
+    if (args['raw'] == true) {
+      res = content;
+    } else {
+      res = render(content).join('\n\n');
+    }
+    print(res);
+    return;
+  }
 
   if (arguments.isEmpty || args.rest.isEmpty) {
     eprint(
@@ -71,7 +89,7 @@ Future<void> run(List<String> arguments) async {
     late final String lines;
     final content = command.getContent(dirs.cache.path,
         language: language, platform: platform);
-    if (args['raw']) {
+    if (args['raw'] == true) {
       lines = content;
     } else {
       lines = render(content).join("\n\n");

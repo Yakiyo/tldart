@@ -27,6 +27,8 @@ var parser = ArgParser()
       defaultsTo: false,
       help: "Print raw markdown without formatting")
   // ..addOption('config', abbr: 'c', help: 'Path to config file')
+  ..addOption('render',
+      abbr: 'f', help: 'Path to render a custom markdown file')
   ..addOption('language',
       abbr: 'l', defaultsTo: 'en', help: 'Specify what language to display')
   ..addOption('platform',
