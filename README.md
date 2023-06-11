@@ -7,13 +7,14 @@ Fast tldr client written in dart.
 ![screenie](https://i.ibb.co/p4c2tVZ/image.png)
 
 ## Installation
-- Installing it through the [Dart SDK](https://github.com/dart-lang/sdk) **[Recommended]**
+- **Installing it through the [Dart SDK](https://github.com/dart-lang/sdk)** **[Recommended]**
 ```bash
 $ dart pub global activate tldart
 ```
 This will add the `tldr` executable to your path.
 
-- Manual installation
+- **Manual installation**
+
 Simple binaries for windows, macos and linux are available in zip files in the [release](https://github.com/Yakiyo/tldart/releases/latest) section. You can download the zip file, extract the `tldr.exe` (or `tldr` depending on your platform) and add the directory to your path.
 
 ## Usage
@@ -33,7 +34,14 @@ $ tldr -l ar chrome # to search for `chrome` in arabic lang
 
 You can specify the language with the `--language` or `-l` flag.
 
-Platform can be specified with `--platform` or `-p` flag. (One of 'linux', 'macos', 'windows', 'sunos', 'osx', 'android'). By default the platform used is the user's current platform, if the query is not available for the platform, the app switches to the `common` platform. 
+Platform can be specified with `--platform` or `-p` flag. (One of 'linux', 'macos', 'windows', 'sunos', 'osx', 'android'). By default the platform used is the user's current platform, if the query is not available for the platform, the app switches to the `common` platform. You can view the raw markdown using the `--raw` or `-r` flag. 
+
+### Render custom file
+To render a custom markdown file not within the cache directory, use the `--render` or `-f` flag.
+```bash
+$ tldr -f path/to/file.md
+```
+The `-l` and `-p` flag are completely useless in this case but the `-r` (raw) flag will work. If the markdown contains any line that does not match the tldr format, it is silently ignored. 
 
 ### Listing all commands
 ```bash
@@ -52,6 +60,11 @@ This downloads the tldr archive, unzips it and stores it in your `~/.tldr/cache`
 The app emits some debug logs internally. This can be viewed by setting the `DEBUG` env variable to anything, as long as its not empty. For example in bash:
 ```bash
 $ DEBUG=1 tldr -u
+```
+
+To see a short help, run
+```bash
+$ tldr tldr
 ```
 
 For any problems, queries or bugs, feel free to open a new [issue](https://github.com/Yakiyo/tldart/issues/).
