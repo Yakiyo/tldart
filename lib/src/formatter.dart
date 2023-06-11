@@ -18,12 +18,22 @@ List<String> render(String content) {
       // Example
       line = line.substring(
           1, line.length - 1); // Remove ` from the first and last position
-      // TODO: Replace curly braces with underline
-      line = line.replaceAll(
-          RegExp(r'{{|}}'), ''); // replace curly braces in examples
-      res.add('      ${ansi.cyan(line)}');
+      res.add('      ${ansi.cyan(highlightVariables(line, ansi))}');
     }
   }
   res.add('');
   return res;
+}
+
+/// Remove curly braces and underline variables in a code example
+String highlightVariables(String line, Ansi ansi) {
+  return line
+      .split("}}")
+      .map((s) {
+        final i = s.split("{{");
+        i.length > 1 ? i[1] = ansi.underline(i[1]) : null;
+        return i.join("{{");
+      })
+      .join("}}")
+      .replaceAll(RegExp("{{|}}"), "");
 }
