@@ -1,6 +1,7 @@
 import 'dart:io' show stderr, Platform, Directory, File;
 import 'package:path/path.dart' show join;
 import 'package:args/args.dart' show ArgParser;
+import 'package:ansi/ansi.dart' show Ansi;
 import '../tldart.dart';
 
 /// Print debug logs. This should only print them if DEBUG env is non-empty
@@ -19,21 +20,22 @@ void eprint(dynamic error) {
 
 /// Print help message
 void showHelp(ArgParser parser) {
+  final ansi = Ansi();
   print("""
-tldart $version
+${ansi.blue('tldart')} $version
 Fast and easy to use TLDR client
 
-USAGE:
-  tldr [OPTIONS] [COMMAND]
+${ansi.blue("USAGE:")}
+  tldr ${ansi.blue("[OPTIONS]")} ${ansi.blue("[COMMAND]")}
   Example: tldr -p linux git log
 
-ARGUMENTS:
+${ansi.blue("ARGUMENTS:")}
   [COMMAND] The command to show (e.g. `cp` or `tar`)
 
-OPTIONS:
+${ansi.blue("OPTIONS:")}
   ${parser.usage.split("\n").join("\n  ")}
 
-To view documentation or file an issue, please visit https://github.com/Yakiyo/tldart
+To view documentation or file an issue, please visit ${ansi.underline('https://github.com/Yakiyo/tldart')}
 """);
   return;
 }
