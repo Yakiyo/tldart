@@ -68,9 +68,15 @@ Future<void> run(List<String> arguments) async {
     if (command == null) {
       throw LibException(Errors.InvalidCommand, message: ansi.bold(query));
     }
-    final lines = render(command.getContent(dirs.cache.path,
-        language: language, platform: platform));
-    print(lines.join('\n\n'));
+    late final String lines;
+    final content = command.getContent(dirs.cache.path,
+        language: language, platform: platform);
+    if (args['raw']) {
+      lines = content;
+    } else {
+      lines = render(content).join("\n\n");
+    }
+    print(lines);
     return;
   } on LibException catch (e) {
     late final String eMsg;

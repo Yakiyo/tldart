@@ -21,6 +21,11 @@ var parser = ArgParser()
       abbr: 'u',
       defaultsTo: false,
       help: "Update local cache")
+  ..addFlag("raw",
+      negatable: false,
+      abbr: 'r',
+      defaultsTo: false,
+      help: "Print raw markdown without formatting")
   // ..addOption('config', abbr: 'c', help: 'Path to config file')
   ..addOption('language',
       abbr: 'l', defaultsTo: 'en', help: 'Specify what language to display')
